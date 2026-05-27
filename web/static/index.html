@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LIQTRAP WEB TERMINAL DEMO</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="bg"></div>
+  <header class="top">
+    <div class="brand">
+      <span class="dot"></span>
+      <h1>LIQTRAP WEB TERMINAL</h1>
+    </div>
+    <div class="right-chips">
+      <span class="chip">REAL TRADING DISABLED</span>
+      <span class="chip" id="serverClock">--</span>
+      <span class="chip" id="refreshState">Auto 10s</span>
+    </div>
+  </header>
+
+  <nav class="nav">
+    <a href="/home" class="nav-btn active" data-page="home">Home</a>
+    <a href="/market" class="nav-btn" data-page="market">Market</a>
+    <a href="/sources" class="nav-btn" data-page="sources">Sources</a>
+  </nav>
+
+  <main class="layout">
+    <section class="main">
+      <section class="card search">
+        <input id="symbolInput" value="BTCUSDT" placeholder="Search coin: BTC, ETH, SOL, XRP..." />
+        <button id="searchBtn">Update</button>
+      </section>
+
+      <section id="page-home" class="page active">
+        <section class="card trap-line">
+          <h3>Trap Pulse (Live)</h3>
+          <p id="trapLineText">Loading...</p>
+        </section>
+
+        <section class="mini-grid" id="topMetrics"></section>
+
+        <section class="grid-2">
+          <article class="card">
+            <div class="card-head">
+              <h3>Liquidation Heatmap</h3>
+              <div class="tabs">
+                <button class="tab active" data-window="1h">1h</button>
+                <button class="tab" data-window="4h">4h</button>
+                <button class="tab" data-window="12h">12h</button>
+                <button class="tab" data-window="24h">24h</button>
+              </div>
+            </div>
+            <div id="heatmapGrid" class="heatmap-grid"></div>
+          </article>
+
+          <article class="card">
+            <h3>Total Liquidation View (Proxy)</h3>
+            <div id="liqStats" class="mini-grid"></div>
+            <h4 class="small-title">Real-Time Liquidations</h4>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Coin</th><th>Price</th><th>Value</th><th>Side</th><th>Source</th></tr>
+                </thead>
+                <tbody id="liqRows"></tbody>
+              </table>
+            </div>
+          </article>
+        </section>
+
+        <section class="grid-2">
+          <article class="card">
+            <h3>Coin Quick View</h3>
+            <div id="coinQuick" class="kv"></div>
+          </article>
+          <article class="card">
+            <h3>TradingView</h3>
+            <div id="tvWrap" class="tv"></div>
+          </article>
+        </section>
+
+        <section class="card">
+          <h3>Market Snapshot (Live) - Click to open owner page</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Coin</th><th>Price</th><th>24h%</th><th>Funding</th><th>Trap</th><th>Bias</th><th>Open</th>
+                </tr>
+              </thead>
+              <tbody id="marketRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-market" class="page">
+        <section class="card">
+          <h3>Live Market Board</h3>
+          <div class="table-wrap tall">
+            <table>
+              <thead>
+                <tr>
+                  <th>Coin</th><th>Price</th><th>24h%</th><th>Volume</th><th>Funding</th><th>Trap</th><th>Bias</th><th>Open</th>
+                </tr>
+              </thead>
+              <tbody id="marketRowsFull"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-sources" class="page">
+        <section class="card">
+          <h3>Sources (Short Info + Click to Owner)</h3>
+          <div id="sourcesGrid" class="sources-grid"></div>
+        </section>
+      </section>
+    </section>
+
+    <aside class="side">
+      <section class="card">
+        <h3>Live News Stream</h3>
+        <div id="newsStream" class="news-stream"></div>
+      </section>
+
+      <section class="card">
+        <h3>Fire News</h3>
+        <h4 class="small-title">Today Fire News</h4>
+        <div id="fireToday" class="news-stream compact"></div>
+        <h4 class="small-title">Last 1 week Fire News</h4>
+        <div id="fireWeek" class="news-stream compact"></div>
+        <h4 class="small-title">Last 1 month Fire News</h4>
+        <div id="fireMonth" class="news-stream compact"></div>
+      </section>
+
+      <section class="card">
+        <h3>Source Health (Quick)</h3>
+        <div id="sourceQuick" class="sources-grid one"></div>
+      </section>
+    </aside>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
