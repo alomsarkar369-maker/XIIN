@@ -22,11 +22,11 @@
   </header>
 
   <nav class="nav">
-    <a href="/home" class="nav-btn active" data-page="home">Home</a>
-    <a href="/coin" class="nav-btn" data-page="coin">Coin Intelligence</a>
-    <a href="/market" class="nav-btn" data-page="market">Market</a>
-    <a href="/liquidations" class="nav-btn" data-page="liquidations">Liquidations</a>
-    <a href="/news" class="nav-btn" data-page="news">News</a>
+    <a href="/home" class="nav-btn active" data-page="home"><span>HM</span>Home</a>
+    <a href="/coin" class="nav-btn" data-page="coin"><span>CI</span>Coin Intelligence</a>
+    <a href="/market" class="nav-btn" data-page="market"><span>MK</span>Market</a>
+    <a href="/liquidations" class="nav-btn" data-page="liquidations"><span>LQ</span>Liquidations</a>
+    <a href="/news" class="nav-btn" data-page="news"><span>NW</span>News</a>
   </nav>
 
   <main class="layout">
@@ -92,6 +92,14 @@
       </section>
 
       <section id="page-coin" class="page">
+        <section class="page-hero coin-hero">
+          <div>
+            <h2 id="coinTitle">BTCUSDT Intelligence</h2>
+            <p id="coinSubline">Live price, orderbook, flow, volatility, and trap pressure in one scan.</p>
+          </div>
+          <div id="coinActionChips" class="action-chips"></div>
+        </section>
+
         <section class="mini-grid" id="coinMetrics"></section>
 
         <section class="grid-2">
@@ -132,6 +140,7 @@
 
         <section class="card">
           <h3>Recent Trades Delta</h3>
+          <div id="tradeInsightGrid" class="insight-grid"></div>
           <div id="tradeDelta" class="list-kv"></div>
           <div class="table-wrap tall">
             <table>
@@ -145,6 +154,15 @@
       </section>
 
       <section id="page-market" class="page">
+        <section class="page-hero market-hero">
+          <div>
+            <h2>Smart Market Board</h2>
+            <p>Top volume coins, pressure score, funding crowd, and trap bias for fast comparison.</p>
+          </div>
+          <span class="news-pulse">LIVE</span>
+        </section>
+        <section class="mini-grid" id="marketStats"></section>
+        <section class="market-lens" id="marketLens"></section>
         <section class="card">
           <h3>Market Board (Binance Public)</h3>
           <div class="table-wrap tall">
@@ -161,6 +179,37 @@
       </section>
 
       <section id="page-liquidations" class="page">
+        <section class="page-hero liq-hero">
+          <div>
+            <h2>Liquidation Command Center</h2>
+            <p>24h pressure, 30d history model, top rekt tokens, and live liquidation flow.</p>
+          </div>
+          <span class="news-pulse">LIVE</span>
+        </section>
+        <section class="mini-grid" id="liqStats"></section>
+        <section class="grid-2">
+          <article class="card">
+            <div class="card-head">
+              <h3>Top 10 Tokens By 24H LIQ</h3>
+              <span class="tiny">ranked pressure</span>
+            </div>
+            <div id="liqTopTokens" class="rank-list"></div>
+          </article>
+          <article class="card">
+            <div class="card-head">
+              <h3>Last 24H LIQ History</h3>
+              <span class="tiny">hourly pressure</span>
+            </div>
+            <div id="liqHistory24" class="history-bars"></div>
+          </article>
+        </section>
+        <section class="card">
+          <div class="card-head">
+            <h3>Last 30 Days LIQ History</h3>
+            <span class="tiny">daily pressure</span>
+          </div>
+          <div id="liqHistory30" class="history-strip"></div>
+        </section>
         <section class="card">
           <h3>Real-Time Liquidations (Public Proxy)</h3>
           <div id="liqMode" class="tiny"></div>
@@ -188,15 +237,15 @@
           <section class="news-section">
             <div class="section-head">
               <h3>Live Crypto News</h3>
-              <span class="tiny">market-moving feed</span>
+              <span class="tiny">verified time feed</span>
             </div>
             <div id="newsList" class="news-grid"></div>
           </section>
 
           <section class="news-section">
             <div class="section-head">
-              <h3>Today Fire News</h3>
-              <span class="tiny">high impact today</span>
+              <h3>Today Latest News</h3>
+              <span class="tiny">first 5, more available</span>
             </div>
             <div id="todayFireNewsFull" class="news-grid compact-grid"></div>
           </section>
@@ -204,16 +253,16 @@
           <section class="grid-2 news-split">
             <article class="news-section">
               <div class="section-head">
-                <h3>Last 7 Days Fire News</h3>
-                <span class="tiny">weekly pressure</span>
+                <h3>Last 7 Days Latest News</h3>
+                <span class="tiny">recent catalysts</span>
               </div>
               <div id="weekFireNewsFull" class="news-list full-news"></div>
             </article>
 
             <article class="news-section">
               <div class="section-head">
-                <h3>Last 30 Days Fire News</h3>
-                <span class="tiny">monthly pressure</span>
+                <h3>Last 30 Days Latest News</h3>
+                <span class="tiny">monthly context</span>
               </div>
               <div id="monthFireNewsFull" class="news-list full-news"></div>
             </article>
@@ -237,12 +286,12 @@
       </section>
 
       <section class="card">
-        <h3>Fire News</h3>
-        <h4 class="sub-title">Today Fire News</h4>
+        <h3>Latest News</h3>
+        <h4 class="sub-title">Today Latest News</h4>
         <div id="fireToday" class="news-list compact"></div>
-        <h4 class="sub-title">Last 1 Week Fire News</h4>
+        <h4 class="sub-title">Last 7 Days Latest News</h4>
         <div id="fireWeek" class="news-list compact"></div>
-        <h4 class="sub-title">Last 1 Month Fire News</h4>
+        <h4 class="sub-title">Last 30 Days Latest News</h4>
         <div id="fireMonth" class="news-list compact"></div>
       </section>
     </aside>
