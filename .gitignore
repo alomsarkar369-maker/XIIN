@@ -1,5 +1,10 @@
 .env
 env.txt
+.venv/
+venv/
+*.log
+*.key
+*.pem
 *.sqlite
 logs/
 __pycache__/

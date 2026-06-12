@@ -3,48 +3,62 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>LIQTRAP WEB TERMINAL DEMO</title>
+  <title>LIQTRAP WEB TERMINAL</title>
   <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
-  <div class="bg"></div>
+  <div class="grid-bg"></div>
+
   <header class="top">
     <div class="brand">
       <span class="dot"></span>
       <h1>LIQTRAP WEB TERMINAL</h1>
     </div>
-    <div class="right-chips">
-      <span class="chip">REAL TRADING DISABLED</span>
-      <span class="chip" id="serverClock">--</span>
-      <span class="chip" id="refreshState">Auto 10s</span>
+    <div class="chips">
+      <span class="chip danger">REAL TRADING DISABLED</span>
+      <span class="chip" id="clockChip">--</span>
+      <span class="chip" id="refreshChip">Auto 10s</span>
     </div>
   </header>
 
   <nav class="nav">
     <a href="/home" class="nav-btn active" data-page="home">Home</a>
+    <a href="/coin" class="nav-btn" data-page="coin">Coin Intelligence</a>
     <a href="/market" class="nav-btn" data-page="market">Market</a>
+    <a href="/liquidations" class="nav-btn" data-page="liquidations">Liquidations</a>
+    <a href="/news" class="nav-btn" data-page="news">News</a>
     <a href="/sources" class="nav-btn" data-page="sources">Sources</a>
   </nav>
 
   <main class="layout">
     <section class="main">
-      <section class="card search">
-        <input id="symbolInput" value="BTCUSDT" placeholder="Search coin: BTC, ETH, SOL, XRP..." />
-        <button id="searchBtn">Update</button>
+      <section class="card search-bar">
+        <input id="symbolInput" value="BTCUSDT" placeholder="Search symbol: BTC, ETH, SOL, XRP, BNB..." />
+        <button id="searchBtn">Scan</button>
       </section>
 
       <section id="page-home" class="page active">
-        <section class="card trap-line">
-          <h3>Trap Pulse (Live)</h3>
-          <p id="trapLineText">Loading...</p>
+        <section class="card">
+          <div class="card-head">
+            <h3>Top Market Pressure</h3>
+            <span class="tiny" id="pressureLabel">Loading...</span>
+          </div>
+          <div class="pressure-wrap">
+            <div class="pressure-long" id="pressureLongBar"></div>
+            <div class="pressure-short" id="pressureShortBar"></div>
+          </div>
+          <div class="pressure-meta">
+            <span id="pressureLongText">Long 0%</span>
+            <span id="pressureShortText">Short 0%</span>
+          </div>
         </section>
 
-        <section class="mini-grid" id="topMetrics"></section>
+        <section class="mini-grid" id="summaryMetrics"></section>
 
         <section class="grid-2">
           <article class="card">
             <div class="card-head">
-              <h3>Liquidation Heatmap</h3>
+              <h3>Liquidation Heatmap (Trap-Risk 8-10)</h3>
               <div class="tabs">
                 <button class="tab active" data-window="1h">1h</button>
                 <button class="tab" data-window="4h">4h</button>
@@ -52,42 +66,93 @@
                 <button class="tab" data-window="24h">24h</button>
               </div>
             </div>
-            <div id="heatmapGrid" class="heatmap-grid"></div>
+            <div id="heatmapGrid" class="heatmap"></div>
           </article>
 
           <article class="card">
-            <h3>Total Liquidation View (Proxy)</h3>
-            <div id="liqStats" class="mini-grid"></div>
-            <h4 class="small-title">Real-Time Liquidations</h4>
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr><th>Coin</th><th>Price</th><th>Value</th><th>Side</th><th>Source</th></tr>
-                </thead>
-                <tbody id="liqRows"></tbody>
-              </table>
-            </div>
-          </article>
-        </section>
-
-        <section class="grid-2">
-          <article class="card">
-            <h3>Coin Quick View</h3>
-            <div id="coinQuick" class="kv"></div>
-          </article>
-          <article class="card">
-            <h3>TradingView</h3>
-            <div id="tvWrap" class="tv"></div>
+            <h3>Trap Situation Summary</h3>
+            <div id="trapSummary" class="list-kv"></div>
+            <h4 class="sub-title">Top Trap-Risk Coins</h4>
+            <div id="topRiskCoins" class="pill-wrap"></div>
           </article>
         </section>
 
         <section class="card">
-          <h3>Market Snapshot (Live) - Click to open owner page</h3>
+          <h3>Live Market Snapshot</h3>
           <div class="table-wrap">
             <table>
               <thead>
                 <tr>
                   <th>Coin</th><th>Price</th><th>24h%</th><th>Funding</th><th>Trap</th><th>Bias</th><th>Open</th>
+                </tr>
+              </thead>
+              <tbody id="homeMarketRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-coin" class="page">
+        <section class="mini-grid" id="coinMetrics"></section>
+
+        <section class="grid-2">
+          <article class="card">
+            <h3>Orderbook Pressure</h3>
+            <div id="orderbookPressure" class="list-kv"></div>
+            <div class="orderbook-grid">
+              <div>
+                <h4 class="sub-title">Top Bids</h4>
+                <div class="table-wrap small">
+                  <table>
+                    <thead><tr><th>Price</th><th>Qty</th></tr></thead>
+                    <tbody id="bidRows"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <h4 class="sub-title">Top Asks</h4>
+                <div class="table-wrap small">
+                  <table>
+                    <thead><tr><th>Price</th><th>Qty</th></tr></thead>
+                    <tbody id="askRows"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <h3>AI Trap Read</h3>
+            <div id="aiSignal" class="signal"></div>
+            <div id="aiExplanation" class="explain"></div>
+            <div class="spacer"></div>
+            <h4 class="sub-title">TradingView</h4>
+            <div id="tvWrap" class="tv-box"></div>
+          </article>
+        </section>
+
+        <section class="card">
+          <h3>Recent Trades Delta</h3>
+          <div id="tradeDelta" class="list-kv"></div>
+          <div class="table-wrap tall">
+            <table>
+              <thead>
+                <tr><th>Side</th><th>Price</th><th>Qty</th><th>Notional</th></tr>
+              </thead>
+              <tbody id="tradeRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </section>
+
+      <section id="page-market" class="page">
+        <section class="card">
+          <h3>Market Board (Binance Public)</h3>
+          <div class="table-wrap tall">
+            <table>
+              <thead>
+                <tr>
+                  <th>Coin</th><th>Price</th><th>24h%</th><th>Volume</th><th>Funding</th><th>Trap</th><th>Bias</th><th>Open</th>
                 </tr>
               </thead>
               <tbody id="marketRows"></tbody>
@@ -96,25 +161,31 @@
         </section>
       </section>
 
-      <section id="page-market" class="page">
+      <section id="page-liquidations" class="page">
         <section class="card">
-          <h3>Live Market Board</h3>
+          <h3>Real-Time Liquidations (Public Proxy)</h3>
+          <div id="liqMode" class="tiny"></div>
           <div class="table-wrap tall">
             <table>
               <thead>
-                <tr>
-                  <th>Coin</th><th>Price</th><th>24h%</th><th>Volume</th><th>Funding</th><th>Trap</th><th>Bias</th><th>Open</th>
-                </tr>
+                <tr><th>Coin</th><th>Exchange</th><th>Price</th><th>Value</th><th>Side</th><th>Open</th></tr>
               </thead>
-              <tbody id="marketRowsFull"></tbody>
+              <tbody id="liqRows"></tbody>
             </table>
           </div>
         </section>
       </section>
 
+      <section id="page-news" class="page">
+        <section class="card">
+          <h3>Live News Feed</h3>
+          <div id="newsList" class="news-list"></div>
+        </section>
+      </section>
+
       <section id="page-sources" class="page">
         <section class="card">
-          <h3>Sources (Short Info + Click to Owner)</h3>
+          <h3>Source Health</h3>
           <div id="sourcesGrid" class="sources-grid"></div>
         </section>
       </section>
@@ -122,22 +193,22 @@
 
     <aside class="side">
       <section class="card">
-        <h3>Live News Stream</h3>
-        <div id="newsStream" class="news-stream"></div>
+        <h3>Live Liquidation Ticker</h3>
+        <div id="sideLiqTicker" class="ticker"></div>
       </section>
 
       <section class="card">
         <h3>Fire News</h3>
-        <h4 class="small-title">Today Fire News</h4>
-        <div id="fireToday" class="news-stream compact"></div>
-        <h4 class="small-title">Last 1 week Fire News</h4>
-        <div id="fireWeek" class="news-stream compact"></div>
-        <h4 class="small-title">Last 1 month Fire News</h4>
-        <div id="fireMonth" class="news-stream compact"></div>
+        <h4 class="sub-title">Today Fire News</h4>
+        <div id="fireToday" class="news-list compact"></div>
+        <h4 class="sub-title">Last 1 Week Fire News</h4>
+        <div id="fireWeek" class="news-list compact"></div>
+        <h4 class="sub-title">Last 1 Month Fire News</h4>
+        <div id="fireMonth" class="news-list compact"></div>
       </section>
 
       <section class="card">
-        <h3>Source Health (Quick)</h3>
+        <h3>External Source Shortcuts</h3>
         <div id="sourceQuick" class="sources-grid one"></div>
       </section>
     </aside>

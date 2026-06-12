@@ -1,0 +1,21 @@
+LIQTRAP WEB BUILD LOG
+Date: 2026-05-28
+
+Completed:
+1. Rebuilt FastAPI server routes with standalone architecture (no old bot imports).
+2. Added public Binance market intelligence endpoints.
+3. Added /api/search coin intelligence endpoint with trap read.
+4. Added Bybit public liquidation proxy module.
+5. Added DexScreener module for search + trending.
+6. Added source health status matrix with owner links.
+7. Rebuilt frontend with pages: Home/Coin/Market/Liquidations/News/Sources.
+8. Added compact yellow-dark professional UI.
+9. Added auto refresh every 10 seconds.
+10. Added Vercel compatibility files: api/index.py + vercel.json.
+11. Added local run docs and data notes.
+
+Optional keys for future upgrades:
+- CRYPTOPANIC_API_KEY
+- ETHERSCAN_API_KEY
+- BSCSCAN_API_KEY
+- COINGLASS_API_KEY
