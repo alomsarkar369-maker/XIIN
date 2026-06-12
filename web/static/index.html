@@ -27,7 +27,6 @@
     <a href="/market" class="nav-btn" data-page="market">Market</a>
     <a href="/liquidations" class="nav-btn" data-page="liquidations">Liquidations</a>
     <a href="/news" class="nav-btn" data-page="news">News</a>
-    <a href="/sources" class="nav-btn" data-page="sources">Sources</a>
   </nav>
 
   <main class="layout">
@@ -177,16 +176,56 @@
       </section>
 
       <section id="page-news" class="page">
-        <section class="card">
-          <h3>Live News Feed</h3>
-          <div id="newsList" class="news-list"></div>
-        </section>
-      </section>
+        <section class="news-board">
+          <div class="news-hero">
+            <div>
+              <h2>LIQTRAP News Intelligence</h2>
+              <p>Crypto, liquidation pressure, world market, and AI risk updates in compact scan mode.</p>
+            </div>
+            <span class="news-pulse">LIVE</span>
+          </div>
 
-      <section id="page-sources" class="page">
-        <section class="card">
-          <h3>Source Health</h3>
-          <div id="sourcesGrid" class="sources-grid"></div>
+          <section class="news-section">
+            <div class="section-head">
+              <h3>Live Crypto News</h3>
+              <span class="tiny">market-moving feed</span>
+            </div>
+            <div id="newsList" class="news-grid"></div>
+          </section>
+
+          <section class="news-section">
+            <div class="section-head">
+              <h3>Today Fire News</h3>
+              <span class="tiny">high impact today</span>
+            </div>
+            <div id="todayFireNewsFull" class="news-grid compact-grid"></div>
+          </section>
+
+          <section class="grid-2 news-split">
+            <article class="news-section">
+              <div class="section-head">
+                <h3>Last 7 Days Fire News</h3>
+                <span class="tiny">weekly pressure</span>
+              </div>
+              <div id="weekFireNewsFull" class="news-list full-news"></div>
+            </article>
+
+            <article class="news-section">
+              <div class="section-head">
+                <h3>Last 30 Days Fire News</h3>
+                <span class="tiny">monthly pressure</span>
+              </div>
+              <div id="monthFireNewsFull" class="news-list full-news"></div>
+            </article>
+          </section>
+
+          <section class="news-section">
+            <div class="section-head">
+              <h3>AI / World Market News</h3>
+              <span class="tiny">macro and AI risk</span>
+            </div>
+            <div id="aiWorldNews" class="news-grid compact-grid"></div>
+          </section>
         </section>
       </section>
     </section>
@@ -205,11 +244,6 @@
         <div id="fireWeek" class="news-list compact"></div>
         <h4 class="sub-title">Last 1 Month Fire News</h4>
         <div id="fireMonth" class="news-list compact"></div>
-      </section>
-
-      <section class="card">
-        <h3>External Source Shortcuts</h3>
-        <div id="sourceQuick" class="sources-grid one"></div>
       </section>
     </aside>
   </main>

@@ -1,7 +1,13 @@
 [build]
-publish = "web"
+command = "mkdir -p web/static/static && cp web/static/style.css web/static/static/style.css && cp web/static/app.js web/static/static/app.js"
+publish = "web/static"
+
+[[redirects]]
+from = "/sources"
+to = "/home"
+status = 301
 
 [[redirects]]
 from = "/*"
-to = "/static/index.html"
+to = "/index.html"
 status = 200

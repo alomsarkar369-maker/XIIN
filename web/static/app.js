@@ -8,10 +8,10 @@ const state = {
   market: null,
   liquidations: null,
   news: null,
-  sources: null,
 };
 
 const el = {
+  layout: document.querySelector(".layout"),
   clockChip: document.getElementById("clockChip"),
   refreshChip: document.getElementById("refreshChip"),
   symbolInput: document.getElementById("symbolInput"),
@@ -24,7 +24,6 @@ const el = {
     market: document.getElementById("page-market"),
     liquidations: document.getElementById("page-liquidations"),
     news: document.getElementById("page-news"),
-    sources: document.getElementById("page-sources"),
   },
   pressureLabel: document.getElementById("pressureLabel"),
   pressureLongBar: document.getElementById("pressureLongBar"),
@@ -50,11 +49,13 @@ const el = {
   liqMode: document.getElementById("liqMode"),
   sideLiqTicker: document.getElementById("sideLiqTicker"),
   newsList: document.getElementById("newsList"),
+  todayFireNewsFull: document.getElementById("todayFireNewsFull"),
+  weekFireNewsFull: document.getElementById("weekFireNewsFull"),
+  monthFireNewsFull: document.getElementById("monthFireNewsFull"),
+  aiWorldNews: document.getElementById("aiWorldNews"),
   fireToday: document.getElementById("fireToday"),
   fireWeek: document.getElementById("fireWeek"),
   fireMonth: document.getElementById("fireMonth"),
-  sourcesGrid: document.getElementById("sourcesGrid"),
-  sourceQuick: document.getElementById("sourceQuick"),
 };
 
 const fmt = (n, d = 3) => {
@@ -400,45 +401,27 @@ async function staticLiquidations(symbol, limit = 30) {
   return { ok: true, symbol: normalizeSymbol(symbol), rows: rows.slice(0, limit), bybit_ticker: { mode: "netlify_public_proxy" }, mode: "netlify_public_proxy" };
 }
 
+function impactLine(tag, title) {
+  const low = String(title || "").toLowerCase();
+  if (low.includes("liquidation") || low.includes("funding")) return "Derivatives pressure may shift fast.";
+  if (low.includes("etf") || low.includes("sec") || low.includes("approval")) return "Regulatory headline can move large caps.";
+  if (tag === "World") return "Macro risk can change crypto liquidity.";
+  if (tag === "AI") return "AI sector sentiment can affect tech beta.";
+  return "Watch price reaction and volume confirmation.";
+}
+
 function staticNews(symbol) {
   const now = new Date();
   const rows = [
-    ["Crypto", "CoinDesk", `${symbol} market pressure watch`, "https://www.coindesk.com/markets/"],
-    ["Crypto", "Cointelegraph", "Crypto liquidation and funding updates", "https://cointelegraph.com/tags/bitcoin"],
-    ["World", "Reuters", "Global market risk feed", "https://www.reuters.com/markets/"],
-    ["AI", "VentureBeat", "AI market infrastructure updates", "https://venturebeat.com/ai/"],
-  ].map(([tag, source, title, url], i) => ({ tag, source, title, url, published_at: now.toISOString(), published_label: i === 0 ? "Live source" : "External source" }));
+    ["Crypto", "Market Desk", `${symbol} liquidity pressure watch`, "#"],
+    ["Crypto", "Market Desk", "Crypto liquidation and funding updates", "#"],
+    ["Crypto", "Market Desk", "Large-cap volatility scan", "#"],
+    ["World", "Macro Desk", "Global market risk feed", "#"],
+    ["World", "Macro Desk", "Dollar and yields pressure check", "#"],
+    ["AI", "AI Desk", "AI market infrastructure updates", "#"],
+    ["AI", "AI Desk", "AI sector sentiment watch", "#"],
+  ].map(([tag, source, title, url], i) => ({ tag, source, title, url, published_at: now.toISOString(), published_label: i === 0 ? "Live" : "Recent", impact: impactLine(tag, title) }));
   return { ok: true, symbol, state: "static_public_mode", items: rows, fire_news: { today: rows, last_1week: rows, last_1month: rows }, note: "Click item to open owner source." };
-}
-
-function staticSources() {
-  const row = (name, url, status, state, note) => ({ name, url, status, state, note });
-  return {
-    ok: true,
-    real_trading_disabled: true,
-    rows: [
-      row("Binance Spot/Futures", "https://www.binance.com/en/futures", "Connected", "connected", "Browser public API / fallback"),
-      row("Binance Order Book / Trades", "https://www.binance.com/en/futures", "Connected", "connected", "Depth + trade flow"),
-      row("TradingView Chart", "https://www.tradingview.com/", "Connected", "connected", "External chart widget"),
-      row("DEX Screener", "https://dexscreener.com/", "Connected", "connected", "External trend reference"),
-      row("Bybit Liquidation Proxy", "https://www.bybit.com/en-US/market", "Not connected yet", "not_connected", "External source link ready"),
-      row("Coinglass OI/Funding/Liquidation", "https://www.coinglass.com/", "Not connected yet", "not_connected", "Owner data reference link"),
-      row("CryptoPanic", "https://cryptopanic.com/", "API key required", "api_required", "News feed placeholder"),
-      row("Etherscan", "https://etherscan.io/", "API key required", "api_required", "Whale clue placeholder"),
-      row("BscScan", "https://bscscan.com/", "API key required", "api_required", "Whale clue placeholder"),
-      row("Bookmap", "https://bookmap.com/", "API key required", "api_required", "Orderflow reference"),
-      row("Exocharts", "https://exocharts.com/", "API key required", "api_required", "Footprint reference"),
-      row("TradingLite", "https://tradinglite.com/", "API key required", "api_required", "Heatmap reference"),
-      row("CryptoQuant", "https://cryptoquant.com/", "API key required", "api_required", "On-chain reference"),
-      row("Glassnode", "https://glassnode.com/", "API key required", "api_required", "On-chain macro"),
-      row("Arkham", "https://arkhamintelligence.com/", "API key required", "api_required", "Wallet intelligence"),
-      row("Whale Alert", "https://whale-alert.io/", "API key required", "api_required", "Whale transfer feed"),
-      row("Coinalyze", "https://coinalyze.net/", "Not connected yet", "not_connected", "OI/Funding reference"),
-      row("OKX Orderbook", "https://www.okx.com/", "Not connected yet", "not_connected", "External reference"),
-      row("Velo Data", "https://velo.xyz/", "Not connected yet", "not_connected", "Derivatives analytics"),
-      row("Hyblock", "https://hyblockcapital.com/", "Not connected yet", "not_connected", "Liquidation map"),
-    ],
-  };
 }
 
 async function getStaticJson(url) {
@@ -452,7 +435,6 @@ async function getStaticJson(url) {
   if (path === "/api/binance/market-table") return staticMarketTable(limit);
   if (path === "/api/liquidations/live") return staticLiquidations(symbol, limit);
   if (path === "/api/news") return staticNews(symbol);
-  if (path === "/api/sources/status") return staticSources();
   throw new Error(`No static fallback for ${path}`);
 }
 
@@ -463,9 +445,11 @@ function kvRows(rows) {
 }
 
 function setPage(page) {
+  if (page === "sources") page = "home";
   state.page = page;
-  Object.entries(el.pages).forEach(([k, v]) => v.classList.toggle("active", k === page));
+  Object.entries(el.pages).forEach(([k, v]) => v?.classList.toggle("active", k === page));
   el.navBtns.forEach((b) => b.classList.toggle("active", b.dataset.page === page));
+  el.layout?.classList.toggle("full-width", page !== "home");
   history.replaceState({}, "", `/${page}`);
 }
 
@@ -657,33 +641,32 @@ function renderLiquidations() {
 }
 
 function renderNewsBlock(items, target, limit = 20) {
+  if (!target) return;
   const rows = (items || []).slice(0, limit);
   if (!rows.length) {
-    target.innerHTML = `<article class="news-item"><a href="#">Not connected yet</a></article>`;
+    target.innerHTML = `<article class="news-item"><div class="news-title">No news loaded yet</div><div class="impact">Waiting for next refresh.</div></article>`;
     return;
   }
   target.innerHTML = rows
     .map(
       (x) => `<article class="news-item">
-  <a target="_blank" rel="noopener noreferrer" href="${x.url || "#"}">${x.title || "Untitled"}</a>
-  <div class="meta">${x.source || "source"} | ${x.published_label || ""}</div>
+  <a class="news-title" target="_blank" rel="noopener noreferrer" href="${x.url || "#"}">${x.title || "Untitled"}</a>
+  <div class="meta"><span>${x.tag || "News"}</span> | ${x.published_label || x.source || ""}</div>
+  <div class="impact">${x.impact || impactLine(x.tag, x.title)}</div>
 </article>`,
     )
     .join("");
 }
 
-function renderSources(rows, target, limit = 8) {
-  const list = (rows || []).slice(0, limit);
-  target.innerHTML = list
-    .map(
-      (x) => `<article class="source-card">
-  <h4>${x.name}</h4>
-  <p class="status ${x.state}">${x.status}</p>
-  <p>${x.note || ""}</p>
-  <a target="_blank" rel="noopener noreferrer" href="${x.url || "#"}">Open Source</a>
-</article>`,
-    )
-    .join("");
+function renderNewsPage() {
+  const items = state.news?.items || [];
+  const crypto = items.filter((x) => (x.tag || "").toLowerCase() === "crypto");
+  const aiWorld = items.filter((x) => ["ai", "world"].includes((x.tag || "").toLowerCase()));
+  renderNewsBlock(crypto.length ? crypto : items, el.newsList, 18);
+  renderNewsBlock(state.news?.fire_news?.today, el.todayFireNewsFull, 8);
+  renderNewsBlock(state.news?.fire_news?.last_1week, el.weekFireNewsFull, 12);
+  renderNewsBlock(state.news?.fire_news?.last_1month, el.monthFireNewsFull, 12);
+  renderNewsBlock(aiWorld.length ? aiWorld : items, el.aiWorldNews, 12);
 }
 
 function renderAll() {
@@ -701,33 +684,28 @@ function renderAll() {
 
   renderLiquidations();
 
-  renderNewsBlock(state.news?.items, el.newsList, 80);
+  renderNewsPage();
   renderNewsBlock(state.news?.fire_news?.today, el.fireToday, 8);
   renderNewsBlock(state.news?.fire_news?.last_1week, el.fireWeek, 12);
   renderNewsBlock(state.news?.fire_news?.last_1month, el.fireMonth, 16);
-
-  renderSources(state.sources?.rows, el.sourcesGrid, 40);
-  renderSources(state.sources?.rows, el.sourceQuick, 8);
 }
 
 async function refreshData() {
   const q = encodeURIComponent(state.symbol);
   try {
     el.refreshChip.textContent = "Refreshing...";
-    const [home, search, market, liquidations, news, sources] = await Promise.all([
+    const [home, search, market, liquidations, news] = await Promise.all([
       getJson(`/api/binance/home?symbol=${q}`),
       getJson(`/api/search?symbol=${q}`),
       getJson(`/api/binance/market-table?limit=35`),
       getJson(`/api/liquidations/live?symbol=${q}&limit=70`),
       getJson(`/api/news?symbol=${q}`),
-      getJson(`/api/sources/status`),
     ]);
     state.home = home;
     state.search = search;
     state.market = market;
     state.liquidations = liquidations;
     state.news = news;
-    state.sources = sources;
     renderAll();
     el.refreshChip.textContent = "Auto 10s";
   } catch (err) {
@@ -740,7 +718,7 @@ async function refreshData() {
 
 function boot() {
   const p = (location.pathname || "/home").replace("/", "");
-  const page = ["home", "coin", "market", "liquidations", "news", "sources"].includes(p) ? p : "home";
+  const page = ["home", "coin", "market", "liquidations", "news"].includes(p) ? p : "home";
   setPage(page);
 
   el.navBtns.forEach((b) => {

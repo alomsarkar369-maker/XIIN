@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, Query
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 
 from web.api.binance import router as binance_router
@@ -72,8 +72,8 @@ def news_page() -> FileResponse:
 
 
 @app.get("/sources", include_in_schema=False)
-def sources_page() -> FileResponse:
-    return _serve_index()
+def sources_page() -> RedirectResponse:
+    return RedirectResponse(url="/home", status_code=307)
 
 
 @app.get("/api/liquidations/live")

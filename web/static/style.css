@@ -128,6 +128,14 @@ h1 {
   padding: 12px;
 }
 
+.layout.full-width {
+  grid-template-columns: 1fr;
+}
+
+.layout.full-width .side {
+  display: none;
+}
+
 .main,
 .side {
   display: flex;
@@ -475,6 +483,86 @@ td a {
   max-height: 130px;
 }
 
+.news-board {
+  display: grid;
+  gap: 10px;
+}
+
+.news-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  border: 1px solid #3a330e;
+  border-radius: 8px;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, rgba(255, 212, 38, 0.12), rgba(10, 10, 10, 0.9)),
+    linear-gradient(180deg, #151515, #080808);
+}
+
+.news-hero h2 {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: 18px;
+  color: #fff3a5;
+}
+
+.news-hero p {
+  margin: 5px 0 0;
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.news-pulse {
+  border: 1px solid var(--yellow);
+  border-radius: 999px;
+  padding: 5px 10px;
+  color: #181300;
+  background: var(--yellow);
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+}
+
+.news-section {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  padding: 9px;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.section-head h3 {
+  margin: 0;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.news-grid.compact-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.news-split {
+  align-items: start;
+}
+
+.full-news {
+  max-height: 360px;
+}
+
 .news-item {
   border: 1px solid #282828;
   border-radius: 7px;
@@ -482,16 +570,26 @@ td a {
   background: #0c0c0c;
 }
 
+.news-title,
 .news-item a {
+  display: block;
   color: #f5e6a1;
   text-decoration: none;
   font-size: 11px;
+  line-height: 1.35;
 }
 
 .news-item .meta {
   margin-top: 3px;
   font-size: 10px;
   color: var(--muted);
+}
+
+.impact {
+  margin-top: 5px;
+  color: #c9bd84;
+  font-size: 10px;
+  line-height: 1.35;
 }
 
 .sources-grid {
@@ -554,7 +652,9 @@ td a {
   .mini-grid,
   .grid-2,
   .orderbook-grid,
-  .sources-grid {
+  .sources-grid,
+  .news-grid,
+  .news-grid.compact-grid {
     grid-template-columns: 1fr;
   }
 }
